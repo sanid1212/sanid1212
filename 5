@@ -1,0 +1,22 @@
+@echo off
+
+setlocal EnableDelayedExpansion
+
+set "KEYWORDS=password,passwd,pwd,pass,key,secret,token,api_key,api_secret,access_key,access_secret,login,username,user,email,phone,address,ssn,social_security,cc,credit_card,ccv,cvv,dob,date_of_birth,maiden_name,mother_name,pin"
+
+set "LOG_FOLDER=C:\logs"
+
+cd /d "%LOG_FOLDER%"
+
+for %%f in (*.log) do (
+    set "matched="
+    for /f "tokens=*" %%a in ('findstr /i /m /c:"%KEYWORDS%" "%%f"') do (
+        set matched=1
+        echo "%%f": %%a
+    )
+    if not defined matched (
+        echo "%%f": No matches found.
+    )
+)
+
+pause

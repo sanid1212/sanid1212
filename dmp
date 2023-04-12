@@ -1,0 +1,13 @@
+@echo off
+
+setlocal EnableDelayedExpansion
+
+set "KEYWORDS=password,passwd,pwd,pass,key,secret,token,api_key,api_secret,access_key,access_secret,login,username,user,email,phone,address,ssn,social_security,cc,credit_card,ccv,cvv,dob,date_of_birth,maiden_name,mother_name,pin"
+
+set "DMP_FILE=myfile.dmp"
+
+for /f "tokens=*" %%a in ('findstr /i /c:"%KEYWORDS%" "%DMP_FILE%"') do (
+    echo %%a
+)
+
+pause

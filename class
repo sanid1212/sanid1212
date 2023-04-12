@@ -1,0 +1,9 @@
+@echo off
+
+setlocal enabledelayedexpansion
+
+set "jarFile=path\to\your\jar\file.jar"
+set "extractFolder=%cd%\classes"
+
+mkdir "%extractFolder%"
+jd-gui.exe -e "%jarFile%" "%extractFolder%"

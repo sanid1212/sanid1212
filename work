@@ -1,0 +1,18 @@
+@echo off
+setlocal enabledelayedexpansion
+
+set "searchDir=path\to\your\directory\containing\jar\files"
+set "outputDir=path\to\your\output\directory"
+
+mkdir "%outputDir%"
+
+for %%f in ("%searchDir%\*.jar") do (
+  set "jarFile=%%~nxf"
+  echo Extracting classes from %jarFile%...
+  mkdir "%outputDir%\!jarFile:.jar=_classes!"
+  jd-gui.exe -e "%%f" "%outputDir%\!jarFile:.jar=_classes!"
+  copy "%outputDir%\!jarFile:.jar=_classes!\*.class" "%outputDir%"
+  echo.
+)
+
+echo Extraction complete.

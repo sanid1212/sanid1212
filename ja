@@ -1,0 +1,19 @@
+@echo off
+setlocal enabledelayedexpansion
+
+set "keywords=sensitive information,secret,password"
+
+for /r %%i in (*.jar) do (
+  echo Searching in %%i...
+  jar -xvf "%%i" >nul
+  for /r %%j in (*.class) do (
+    set "line=%%j"
+    for %%k in (%keywords%) do (
+      findstr /i "%%k" "%%j" >nul
+      if !errorlevel! equ 0 (
+        echo Found sensitive keyword "%%k" in %%i: !line!
+      )
+    )
+  )
+  del /s /q *.class >nul
+)

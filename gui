@@ -1,0 +1,14 @@
+@echo off
+
+setlocal enabledelayedexpansion
+
+set "searchString=your_keyword_here"
+set "dir=%cd%"
+
+for /r "%dir%" %%f in (*.jar) do (
+    echo Searching file: %%f
+    jd-gui.exe -e %%f
+    findstr /i /s /c:"!searchString!" *.java >> output.txt
+)
+
+echo Search complete.

@@ -1,0 +1,46 @@
+@echo off
+setlocal EnableDelayedExpansion
+
+set chrome_exe_path="C:\Program Files\Google\Chrome\Application\chrome.exe"
+set url_file_path="C:\urls.txt"
+
+for /f "tokens=*" %%a in (%url_file_path%) do (
+    start %chrome_exe_path% "%%a"
+    timeout /t 5 /nobreak >nul
+    
+    powershell -Command "$wshell = New-Object -ComObject wscript.shell; $wshell.AppActivate('Google Chrome');"
+    timeout /t 1 /nobreak >nul
+    
+    powershell -Command "Start-Process snippingtool.exe -ArgumentList '/clip';"
+    timeout /t 1 /nobreak >nul
+    
+    powershell -Command "$wshell = New-Object -ComObject wscript.shell; $wshell.AppActivate('Snipping Tool');"
+    timeout /t 1 /nobreak >nul
+    
+    powershell -Command "$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('^{n}');"
+    timeout /t 1 /nobreak >nul
+    
+    set "tab_title=%%a"
+    set "tab_title=!tab_title:~8,-1!"
+    set "tab_title=!tab_title: =_!"
+    set "save_file=!tab_title!.png"
+    
+    powershell -Command "$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('{TAB}');"
+    timeout /t 1 /nobreak >nul
+    
+    powershell -Command "$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('^{s}');"
+    timeout /t 1 /nobreak >nul
+    
+    powershell -Command "$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('!n');"
+    timeout /t 1 /nobreak >nul
+    
+    powershell -Command "$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('\"!tab_title!.png\"');"
+    timeout /t 1 /nobreak >nul
+    
+    powershell -Command "$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('~');"
+    timeout /t 1 /nobreak >nul
+    
+    taskkill /IM SnippingTool.exe /F
+)
+
+exit

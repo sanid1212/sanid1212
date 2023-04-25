@@ -1,0 +1,5 @@
+@echo off
+:loop
+call your_another_batch_file.bat
+timeout /t 300 /nobreak >nul
+goto :loop

@@ -1,0 +1,12 @@
+@echo off
+setlocal EnableDelayedExpansion
+
+set "proxy=127.0.0.1:8080"    REM Replace with your proxy settings
+set "output_dir=output"
+
+if not exist "%output_dir%" mkdir "%output_dir%"
+
+for %%f in (*.txt) do (
+  set "output_file=%output_dir%\%%~nf_output.txt"
+  sqlmap.py -r "%%~f" --batch --proxy="%proxy%" -o "!output_file!" 
+)

@@ -1,0 +1,16 @@
+@echo off
+setlocal
+set COMMAND="your command here"
+set OUTPUT_FILE=output.txt
+
+echo Running command...
+%COMMAND% > %OUTPUT_FILE%
+
+echo Taking screenshot...
+timeout 5
+"C:\Program Files\Greenshot\Greenshot.exe" /c
+set SCREENSHOT_FILE=%USERPROFILE%\Pictures\Greenshot\last.png
+
+echo Screenshot saved as %SCREENSHOT_FILE%
+
+pause

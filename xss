@@ -1,0 +1,43 @@
+
+here's an example of how you could reduce the amount of code by using a <script> tag to load the JavaScript code from an external file:
+
+First, create a new JavaScript file called send-token.js and save the following code in it:
+
+function sendBearerToken(authHeader, apiUrl) {
+  // Extract the bearer token from the Authorization header
+  var bearerToken = null;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    bearerToken = authHeader.substring(7);
+  }
+
+  // Send the bearer token to your application
+  if (bearerToken) {
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ token: bearerToken })
+    }).then(response => {
+      if (response.ok) {
+        console.log('Token sent successfully');
+      } else {
+        console.error('Failed to send token:', response.status, response.statusText);
+      }
+    }).catch(error => {
+      console.error('Error sending token:', error);
+    });
+  } else {
+    console.error('Bearer token not found');
+  }
+}
+
+Then, in your HTML file, you can include the following code:
+
+<img src="https://example.com/image.png" onload="sendBearerToken(request.headers.get('Authorization'), 'https://example.com/api/send-token')" />
+<script src="send-token.js"></script>
+
+
+This code uses the onload attribute of the <img> tag to call the sendBearerToken function with the Authorization header from the request and the URL of your application's API endpoint. It also includes a <script> tag to load the send-token.js file that contains the implementation of the sendBearerToken function.
+
+By separating the JavaScript code into a separate file, you can reduce the amount of code in your HTML file and make it easier to manage and update the code.

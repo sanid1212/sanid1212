@@ -1,0 +1,13 @@
+Open your Visual Studio project and select the DLL project that you want to compile with ASLR and DEP flags.
+
+Right-click on the project and select "Properties" from the context menu.
+
+In the "Configuration Properties" section, click on "Linker" and then "Advanced".
+
+In the "Randomized Base Address" option, select "Yes (/DYNAMICBASE)" to enable ASLR.
+
+In the "Data Execution Prevention" option, select "Enabled (/NXCOMPAT)" to enable DEP.
+
+Click on "OK" to save the changes.
+
+Build your project to compile the DLL file with ASLR and DEP flags.

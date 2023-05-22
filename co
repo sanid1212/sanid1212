@@ -1,0 +1,10 @@
+@echo off
+set "source_folder=C:\path\to\source\folder"
+set "destination_folder=C:\path\to\destination\folder"
+
+echo Copying files...
+
+xcopy /s /y "%source_folder%\*.cs" "%destination_folder%"
+xcopy /s /y "%source_folder%\*.csproj" "%destination_folder%"
+
+echo All files copied successfully.

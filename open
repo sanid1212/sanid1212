@@ -1,0 +1,6 @@
+@echo off
+set "chrome_path=C:\Program Files\Google\Chrome\Application\chrome.exe"  // Replace with the actual path to your Chrome executable
+
+for /f "delims=" %%a in (urls.txt) do (
+    start "" "%chrome_path%" "%%a"
+)

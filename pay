@@ -1,0 +1,102 @@
+from burp import IBurpExtender
+from burp import IContextMenuFactory
+from burp import ITab
+from burp import IHttpListener
+from javax.swing import JMenuItem, JMenu, JDialog, WindowConstants, JPanel, JLabel, JComboBox
+from java.awt import GridBagLayout
+
+class PayloadsTab(ITab):
+    
+    def __init__(self, name, payloads):
+        self.name = name
+        self.payloads = payloads
+    
+    def getTabCaption(self):
+        return self.name
+    
+    def getUiComponent(self):
+        panel = JPanel(GridBagLayout())
+        
+        for i, payload in enumerate(self.payloads):
+            label = JLabel("Payload " + str(i + 1))
+            combo = JComboBox(payload)
+            for p in payload:
+                combo.addItem(p)
+            panel.add(label)
+            panel.add(combo)
+        
+        return panel
+
+class PayloadsContextMenuFactory(IContextMenuFactory):
+    
+    def __init__(self, payloads):
+        self.payloads = payloads
+    
+    def createMenuItems(self, invocation):
+        menuItems = []
+        payloadsMenu = JMenu("Payloads")
+        
+        for payload in self.payloads:
+            menuItem = JMenuItem(payload[0])
+            menuItem.addActionListener(lambda event, pl=payload[1]: self.showPayloadsDialog(pl, invocation))
+            payloadsMenu.add(menuItem)
+        
+        menuItems.append(payloadsMenu)
+        return menuItems
+    
+    def showPayloadsDialog(self, payload, invocation):
+        # Extract the selected message from the invocation
+        selectedMessage = invocation.getSelectedMessages()[0]
+        
+        # Extract the request from the selected message
+        request = selectedMessage.getRequest()
+        
+        # TODO: Implement your logic to show the payloads dialog and perform actions on the request
+        
+        # Example: Show payloads dialog
+        payloads_dialog = PayloadsDialog(payload)
+        payloads_dialog.setVisible(True)
+
+class PayloadsDialog(JDialog):
+    
+    def __init__(self, payload):
+        self.payload = payload
+        self.initUI()
+    
+    def initUI(self):
+        self.setTitle("Payload")
+        self.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
+        
+        panel = JPanel(GridBagLayout())
+        label = JLabel("Payload: " + self.payload)
+        panel.add(label)
+        
+        self.add(panel)
+        self.pack()
+        self.setLocationRelativeTo(None)
+
+class BurpExtender(IBurpExtender, IHttpListener):
+    
+    def registerExtenderCallbacks(self, callbacks):
+        self.callbacks = callbacks
+        self.helpers = callbacks.getHelpers()
+        callbacks.setExtensionName("Payloads Extension")
+        callbacks.registerHttpListener(self)
+        
+        # Define payloads for each vulnerability
+        xss_payloads = [
+            ('Payload 1', '"><img src=x onerror=alert(1)></img>'),
+            ('Payload 2', '<svg onload=alert(1)></svg>'),
+            ('Payload 3', '<h1>hai</h1>')
+        ]
+        
+        sql_injection_payloads = [
+            ('Payload 1', "'"),
+            ('Payload 2', "or'1'='1")
+        ]
+        
+        # Create the payload tabs
+        xss_tab = PayloadsTab("XSS Payloads", [x[1] for x in xss_payloads])
+        sql_injection_tab = PayloadsTab("SQL Injection Payloads", [x[1] for x in sql_injection_payloads])
+        
+        # Add the tabs to Burp's

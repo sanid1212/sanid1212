@@ -1,0 +1,52 @@
+from burp import IBurpExtender
+from burp import IHttpListener
+from java.io import File
+from javax.imageio import ImageIO
+
+class BurpExtension(IBurpExtender, IHttpListener):
+    
+    def registerExtenderCallbacks(self, callbacks):
+        self.callbacks = callbacks
+        self.helpers = callbacks.getHelpers()
+        self.callbacks.setExtensionName("Host Header Replacer")
+        self.callbacks.registerHttpListener(self)
+        self.positive_points_folder = "positive_points/"
+        
+    def processHttpMessage(self, toolFlag, messageIsRequest, messageInfo):
+        if messageIsRequest:
+            request = messageInfo.getRequest()
+            analyzedRequest = self.helpers.analyzeRequest(request)
+            headers = analyzedRequest.getHeaders()
+            hostHeaderIndex = -1
+            
+            for i, header in enumerate(headers):
+                if header.startswith("Host:"):
+                    hostHeaderIndex = i
+                    break
+            
+            if hostHeaderIndex != -1:
+                headers[hostHeaderIndex] = "Host: bing.com"
+            
+            newRequest = self.helpers.buildHttpMessage(headers, analyzedRequest.getBody())
+            messageInfo.setRequest(newRequest)
+        else:
+            response = messageInfo.getResponse()
+            analyzedResponse = self.helpers.analyzeResponse(response)
+            
+            if analyzedResponse.getStatusCode() == 200 or analyzedResponse.getStatusCode() == 404:
+                self.takeScreenshot(messageInfo, "positive")
+            elif analyzedResponse.getStatusCode() == 302:
+                self.takeScreenshot(messageInfo, "302")
+    
+    def takeScreenshot(self, messageInfo, screenshotName):
+        requestResponse = self.callbacks.saveBuffersToTempFiles(messageInfo)
+        requestFile = requestResponse.getRequestFile()
+        responseFile = requestResponse.getResponseFile()
+        screenshotPath = self.positive_points_folder + screenshotName + ".png"
+        
+        try:
+            screenshot = self.callbacks.createMessageEditor(messageInfo, False).getVisibleComponent().getScreenshot()
+            ImageIO.write(screenshot, "png", File(screenshotPath))
+            print("Screenshot saved: " + screenshotPath)
+        except Exception as e:
+            print("Error saving screenshot: " + str(e))

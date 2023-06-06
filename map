@@ -1,0 +1,31 @@
+import requests
+import json
+
+# Set up SQLMap API endpoint
+sqlmap_api_url = 'http://localhost:8775'
+
+# Read the HTTP request from the text file
+with open('1.txt', 'r') as file:
+    http_request = file.read()
+
+# Prepare the SQLMap API scan request
+scan_request = {
+    'request': http_request
+}
+
+# Start the SQLMap scan using the API
+scan_response = requests.post(f'{sqlmap_api_url}/scan', json=scan_request)
+scan_id = scan_response.json()['scan_id']
+
+# Get the scan status
+scan_status = requests.get(f'{sqlmap_api_url}/scan/{scan_id}/status').json()
+
+# Wait until the scan is finished
+while scan_status['status'] != 'terminated':
+    scan_status = requests.get(f'{sqlmap_api_url}/scan/{scan_id}/status').json()
+
+# Get the scan results
+scan_results = requests.get(f'{sqlmap_api_url}/scan/{scan_id}/data').json()
+
+# Print the SQLMap scan results
+print(json.dumps(scan_results, indent=4))

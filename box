@@ -1,0 +1,25 @@
+@echo off
+setlocal
+
+set "domain=domain.com"
+set "full_url=https://www.domain.com"
+set "output_dir=%~dp0"
+
+rem Run nikto tool
+echo Running nikto...
+cmd /c nikto -h %full_url%
+
+rem Run fuff tool
+echo Running fuff...
+cmd /c fuff.exe -w big.txt -u %full_url%
+
+rem Run nmap tool for SSL enumeration
+echo Running nmap for SSL enumeration...
+cmd /c nmap.exe --script ssl-enum-ciphers -p 443 %domain%
+
+rem Run nmap tool with aggressive scan
+echo Running nmap with aggressive scan...
+cmd /c nmap.exe -A %domain%
+
+echo All commands executed successfully.
+pause

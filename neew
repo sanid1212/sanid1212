@@ -1,0 +1,21 @@
+@echo off
+setlocal enabledelayedexpansion
+
+set "folder=C:\Path\to\your\folder"
+set "keywords=keyword1 keyword2 keyword3"
+
+for /r "%folder%" %%f in (*.xml) do (
+    echo Searching "%%~nxf"...
+    for %%k in (%keywords%) do (
+        findstr /i "%%k" "%%f" >nul
+        if !errorlevel! equ 0 (
+            echo Found "%%k" in "%%~nxf"
+            echo Matched line(s):
+            findstr /i "%%k" "%%f"
+        )
+    )
+)
+
+echo Search complete.
+
+endlocal

@@ -1,0 +1,25 @@
+@echo off
+setlocal enabledelayedexpansion
+
+set "filename=base64_data.txt"
+
+for /F "usebackq delims=" %%a in ("%filename%") do (
+    set "encoded_line=%%a"
+    set "decoded_line="
+    call :base64decode "!encoded_line!" decoded_line
+    echo !decoded_line!
+)
+
+exit /b
+
+:base64decode
+setlocal
+set "input=%~1"
+set "decoded_output="
+powershell -command "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('%input%'))" >"%TEMP%\base64_output.txt"
+set /p decoded_output=<"%TEMP%\base64_output.txt"
+echo(%decoded_output%
+endlocal & set "%~2=%decoded_output%"
+exit /b
+
+

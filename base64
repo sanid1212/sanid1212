@@ -1,0 +1,22 @@
+import base64
+import xml.etree.ElementTree as ET
+
+def decode_base64(encoded_string):
+    decoded_bytes = base64.b64decode(encoded_string)
+    decoded_string = decoded_bytes.decode("utf-8")
+    return decoded_string
+
+# Parse the XML file
+tree = ET.parse("your_xml_file.xml")  # Replace with the actual XML file path
+root = tree.getroot()
+
+# Find username and password elements and decode
+for elem in root.iter():
+    if elem.tag == "username":
+        username = elem.text
+    elif elem.tag == "password":
+        password = elem.text
+        # Decode username and password
+        decoded_username = decode_base64(username)
+        decoded_password = decode_base64(password)
+        print(f"Username: {decoded_username}, Password: {decoded_password}")

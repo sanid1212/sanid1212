@@ -1,0 +1,20 @@
+import base64
+
+def decode_base64(value):
+    decoded_bytes = base64.b64decode(value)
+    decoded_string = decoded_bytes.decode('utf-8')
+    return decoded_string
+
+def find_credentials(filename):
+    with open(filename, 'r') as file:
+        for line in file:
+            if 'username=' in line:
+                username = line.split('username=')[1].strip()
+                decoded_username = decode_base64(username)
+            if 'password=' in line:
+                password = line.split('password=')[1].strip()
+                decoded_password = decode_base64(password)
+                print(f"Username: {decoded_username}  Password: {decoded_password}")
+
+# Replace 'file.txt' with the path to your text file
+find_credentials('file.txt')

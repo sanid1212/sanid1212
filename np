@@ -1,0 +1,25 @@
+@echo off
+setlocal enabledelayedexpansion
+
+set "filename=file.txt"
+
+for /F "tokens=1,* delims==" %%a in ('findstr /i "username= password=" "%filename%"') do (
+    if /I "%%a"=="username" (
+        set "username=%%b"
+        set "decoded_username="
+        for /f "delims=" %%c in ('powershell -Command "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('!username!'))"') do (
+            set "decoded_username=%%c"
+        )
+    )
+
+    if /I "%%a"=="password" (
+        set "password=%%b"
+        set "decoded_password="
+        for /f "delims=" %%c in ('powershell -Command "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('!password!'))"') do (
+            set "decoded_password=%%c"
+        )
+        echo Username: !decoded_username!  Password: !decoded_password!
+    )
+)
+
+endlocal

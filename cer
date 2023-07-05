@@ -1,0 +1,23 @@
+@echo off
+setlocal enabledelayedexpansion
+
+set "filename=file.txt"
+
+for /F "tokens=1,* delims==" %%a in ('find /i "username=" "%filename%" ^| find /i "password="') do (
+    if /I "%%a"=="username" (
+        set "username=%%b"
+        set "decoded_username="
+        echo !username! | certutil -decodestdin -f "%TEMP%\username.txt" >nul
+        set /p decoded_username=<"%TEMP%\username.txt"
+    )
+
+    if /I "%%a"=="password" (
+        set "password=%%b"
+        set "decoded_password="
+        echo !password! | certutil -decodestdin -f "%TEMP%\password.txt" >nul
+        set /p decoded_password=<"%TEMP%\password.txt"
+        echo Username: !decoded_username!  Password: !decoded_password!
+    )
+)
+
+endlocal

@@ -1,5 +1,6 @@
-there is a password grabbing vulnerability in IBM AS400 that can be exploited by using the QSYRUPWD API. This API allows you to retrieve the encrypted password data for a user profile. If an attacker can gain access to this data, they can use it to sign on to the system as the user profile.
+Here are some additional tips for preventing this vulnerability:
 
-The vulnerability is that the QSYRUPWD API does not check the release level or password level of the system where the password data is retrieved. This means that an attacker could retrieve the password data from a system that is at a higher release level or password level than the system they are trying to sign on to.
-
-For example, if the attacker is trying to sign on to a system that is at release level 5.3 and password level 0, they could retrieve the password data from a system that is at release level 7.3 and password level 2. They could then use this data to sign on to the system at release level 5.3 and password level 0, even though they do not know the user's password.
+Keep your IBM AS400 software up to date with the latest security patches.
+Use a security testing tool to scan your IBM AS400 systems for security vulnerabilities.
+Implement strong password policies and enforce them.
+Use a multi-factor authentication solution to protect your IBM AS400 systems.

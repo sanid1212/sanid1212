@@ -1,0 +1,5 @@
+<netHttpsBinding>
+    <Name>BurpProxy</Name>
+    <ListenUri>http://127.0.0.1:8080</ListenUri>
+    <BypassProxyOnLocal>true</BypassProxyOnLocal>
+</netHttpsBinding>

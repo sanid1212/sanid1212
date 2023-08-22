@@ -1,1 +1,10 @@
-de
+<configuration>
+  <system.net>
+    <defaultProxy enabled="true">
+      <proxy
+        proxyaddress="http://127.0.0.1:8080"
+        bypassonlocal="false"
+      />
+    </defaultProxy>
+  </system.net>
+</configuration>

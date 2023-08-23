@@ -1,10 +1,2 @@
-<configuration>
-  <system.net>
-    <defaultProxy enabled="true">
-      <proxy
-        proxyaddress="http://127.0.0.1:8080"
-        bypassonlocal="false"
-      />
-    </defaultProxy>
-  </system.net>
-</configuration>
+CVE-2023-28709:Allocation of Resources Without Limits or Throttling
+The vulnerability exists due to an incomplete fox for #VU72427 (CVE-2023-24998). If non-default HTTP connector settings were used such that the maxParameterCount could be reached using query string parameters and a request was submitted that supplied exactly maxParameterCount parameters in the query string, the limit for uploaded request parts could be bypassed. A remote attacker can initiate a series of uploads and perform a denial of service (DoS) attack.

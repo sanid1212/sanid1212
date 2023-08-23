@@ -1,2 +1,27 @@
-CVE-2023-28709:Allocation of Resources Without Limits or Throttling
-The vulnerability exists due to an incomplete fox for #VU72427 (CVE-2023-24998). If non-default HTTP connector settings were used such that the maxParameterCount could be reached using query string parameters and a request was submitted that supplied exactly maxParameterCount parameters in the query string, the limit for uploaded request parts could be bypassed. A remote attacker can initiate a series of uploads and perform a denial of service (DoS) attack.
+**Vulnerability Observation: Content Injection in Error Pages URL**
+
+**Description:**
+In the application's error pages URL, a content injection vulnerability has been identified. This vulnerability allows an attacker to inject arbitrary content into error pages, which can potentially be used to carry out phishing attacks or other malicious activities. The attacker can then send the manipulated URL to victims to execute these attacks.
+
+**Details:**
+When an application encounters an error or experiences a problem, it typically displays an error page to inform the user about the issue. In this case, it has been observed that the application does not properly validate or sanitize user input in the error pages' URLs. As a result, an attacker can manipulate the URL to inject arbitrary content that will be reflected in the error page when it is displayed to users.
+
+**Example of Exploitation:**
+An attacker can exploit this vulnerability by crafting a URL like the following:
+
+```
+https://example.com/error-page?message=this%20site%20not%20working%20anymore%20please%20go%20to%20this%20website%20https://attacker.com
+```
+
+In this example, the attacker has injected the content:
+```
+this site not working anymore please go to this website https://attacker.com
+```
+
+The attacker can then send this manipulated URL to potential victims through various means, such as email, social engineering, or chat messages. When a user accesses this manipulated URL, the error page will display the injected content, potentially tricking users into believing that the site is no longer functional and prompting them to visit the malicious website at `https://attacker.com`. This could lead to phishing attacks, the theft of sensitive information, or other malicious actions.
+
+**Recommendation:**
+To mitigate this vulnerability, it is essential to implement proper input validation and sanitization for error page URLs. Additionally, error pages should not reflect user-provided content verbatim. Instead, error messages should be generic and not disclose sensitive information. Furthermore, consider implementing security headers like Content Security Policy (CSP) to restrict the sources of content that can be loaded into error pages.
+
+**Severity:** 
+The severity of this vulnerability is high, as it can lead to phishing attacks and other forms of user deception. Immediate action should be taken to address and remediate this issue. Additionally, user education and awareness programs should be put in place to train users to be cautious when clicking on links, even if they appear to be from trusted sources.

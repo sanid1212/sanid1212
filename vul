@@ -1,7 +1,1 @@
-/v1/agent/self: This endpoint provides configuration and member information of the local agent. While the Config element's format remains stable between releases, the DebugConfig element's format is subject to change without notice or deprecation. Unauthorized access to this endpoint can expose critical information about the Consul configuration and potentially provide insights into the infrastructure's design.
 
-/v1/health: The /health endpoints query health-related information. Unauthorized access to this endpoint can reveal the health status of Consul services, potentially aiding attackers in identifying weak points for exploitation.
-
-/v1/query: This endpoint returns a list of all prepared queries. Unauthorized access to this endpoint can disclose information about the queries used within the Consul service, which may contain sensitive data or reveal internal infrastructure details.
-
-/v1/snapchat: The /snapshot endpoints save and restore the state of the Consul servers for disaster recovery. Unauthorized access to this endpoint can potentially lead to data loss, manipulation, or unauthorized restoration of system states.

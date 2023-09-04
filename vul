@@ -1,16 +1,27 @@
-[req]
-distinguished_name = req_distinguished_name
-x509_extensions = v3_req
-prompt = no
+metadata:
+  language: v1-beta
+  name: "Scoped Path Fuzzer"
+  description: "Fuzzes paths of URLs within the scope and checks for 200 OK responses."
+  author: "Your Name"
+  tags: "fuzzer", "path-fuzzing"
 
-[req_distinguished_name]
-CN = *.example.com
+run for each:
+  url = scope.urls
 
-[v3_req]
-keyUsage = critical, digitalSignature, keyEncipherment
-extendedKeyUsage = serverAuth
-subjectAltName = @alt_names
+given request then
+  define:
+    wordlist_path = "C:/tools/big.txt"
 
-[alt_names]
-DNS.1 = *.example.com
+  run for each:
+    path = {read_file(wordlist_path).split("\n")}
 
+    if {url} is in scope then
+      send request:
+        method: "GET"
+        appending path: {path}
+      
+      if {latest.response.status_code} is "200" then
+        report issue:
+          severity: info
+          confidence: certain
+          detail: "Found a 200 OK response at path {path} on URL {url}"

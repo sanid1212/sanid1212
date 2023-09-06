@@ -1,55 +1,50 @@
-from ftplib import FTP
+import subprocess
 
-# Lion avatar banner
-lion_banner = """
-      (\,,/)
-      (  @ @ )
----oOO-(_)-OOo---
-Lion Avatar
-FTP Default Creds Brute Forcer by Kasireddy
-"""
+# Banner
+print("SSH Default Credentials Checker by Kasi\n")
 
-# FTP server information
-ftp_server = "ftp.example.com"
-ftp_port = 21
+# Define the target SSH server and port
+target_host = 'your_target_host'
+target_port = 22  # Default SSH port
 
-# Function to attempt login with given credentials
-def try_ftp_login(username, password):
-    try:
-        ftp = FTP()
-        ftp.connect(ftp_server, ftp_port)
-        ftp.login(username, password)
-        ftp.quit()
-        return True
-    except Exception as e:
-        return False
+# Read usernames from 'username.txt' file
+with open('username.txt', 'r') as username_file:
+    default_usernames = [line.strip() for line in username_file]
 
-# Read usernames from username.txt
-with open("username.txt", "r") as user_file:
-    usernames = [line.strip() for line in user_file.readlines()]
+# Read passwords from 'password.txt' file
+with open('password.txt', 'r') as password_file:
+    default_passwords = [line.strip() for line in password_file]
 
-# Read passwords from password.txt
-with open("password.txt", "r") as pass_file:
-    passwords = [line.strip() for line in pass_file.readlines()]
+# List to store successful logins
+successful_logins = []
 
-# Display the lion avatar banner
-print(lion_banner)
+# Iterate over each username and every password
+for username in default_usernames:
+    for password in default_passwords:
+        try:
+            # Construct the SSH command to attempt login
+            ssh_command = f'ssh {username}@{target_host} -p {target_port}'
 
-# Flag to indicate if any login was successful
-success = False
+            # Run the SSH command with the specified password
+            process = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            process.stdin.write(f'{password}\n'.encode())
+            process.stdin.flush()
 
-# Iterate through usernames and passwords
-for password in passwords:
-    for username in usernames:
-        if try_ftp_login(username, password):
-            print(f"Login successful for {username}:{password}")
-            success = True
-            break
-        else:
-            print(f"Login failed for {username}:{password}")
+            # Wait for the SSH command to complete
+            process.wait()
 
-# Print a message if any login was successful
-if success:
-    print("\nAt least one login was successful.")
-else:
-    print("\nNo logins were successful.")
+            # Check the return code to determine if the login was successful
+            if process.returncode == 0:
+                successful_logins.append((username, password))
+                print(f'Successful login - Username: {username}, Password: {password}')
+            else:
+                print(f'Failed login - Username: {username}, Password: {password}')
+
+        except Exception as e:
+            # Handle any exceptions that may occur
+            print(f'Error: {e}')
+
+# Print the list of successful logins at the end
+print("\nSuccessful Logins:")
+for username, password in successful_logins:
+    print(f'Username: {username}, Password: {password}')

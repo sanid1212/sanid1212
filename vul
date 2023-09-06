@@ -1,11 +1,17 @@
 import subprocess
+import sys
+
+# Check if the user provided the target host as an argument
+if len(sys.argv) != 2:
+    print("Usage: python 1.py <target_host>")
+    sys.exit(1)
+
+# Extract the target host from the command-line argument
+target_host = sys.argv[1]
 
 # Banner
-print("SSH Default Credentials Checker by Kasi\n")
-
-# Define the target SSH server and port
-target_host = 'your_target_host'
-target_port = 22  # Default SSH port
+print("SSH Default Credentials Checker by Kasi")
+print(f"Target Host: {target_host}\n")
 
 # Read usernames from 'username.txt' file
 with open('username.txt', 'r') as username_file:
@@ -23,7 +29,7 @@ for username in default_usernames:
     for password in default_passwords:
         try:
             # Construct the SSH command to attempt login
-            ssh_command = f'ssh {username}@{target_host} -p {target_port}'
+            ssh_command = f'ssh {username}@{target_host} -p 22'  # Default SSH port is used here
 
             # Run the SSH command with the specified password
             process = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -45,6 +51,9 @@ for username in default_usernames:
             print(f'Error: {e}')
 
 # Print the list of successful logins at the end
-print("\nSuccessful Logins:")
-for username, password in successful_logins:
-    print(f'Username: {username}, Password: {password}')
+if successful_logins:
+    print("\nSuccessful Logins:")
+    for username, password in successful_logins:
+        print(f'Username: {username}, Password: {password}')
+else:
+    print("\nNo successful logins.")

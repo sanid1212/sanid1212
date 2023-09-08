@@ -1,59 +1,33 @@
-import subprocess
-import sys
+import os
+import re
 
-# Check if the user provided the target host as an argument
-if len(sys.argv) != 2:
-    print("Usage: python 1.py <target_host>")
-    sys.exit(1)
+# Define the directory to scan
+root_dir = "/path/to/your/directory"
 
-# Extract the target host from the command-line argument
-target_host = sys.argv[1]
+# Define a flexible pattern for sensitive information
+sensitive_pattern = r'\b(?i)(?:(?:[A-Za-z]+[_\.])*(?:password|api[_\.]key|db[_\.]password|ssn|credit[_\s]card)[_\.:]?\s*=\s*(?:".*?"|".*?")|(?:".*?"|".*?")\s*[\s:=]\s*(?:[A-Za-z]+[_\.])*(?:password|api[_\.]key|db[_\.]password|ssn|credit[_\s]card))\b'
 
-# Banner
-print("SSH Default Credentials Checker by Kasi")
-print(f"Target Host: {target_host}\n")
+def scan_directory(root_dir):
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+        for filename in filenames:
+            file_path = os.path.join(dirpath, filename)
+            scan_file(file_path)
 
-# Read usernames from 'username.txt' file
-with open('username.txt', 'r') as username_file:
-    default_usernames = [line.strip() for line in username_file]
+def scan_file(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
 
-# Read passwords from 'password.txt' file
-with open('password.txt', 'r') as password_file:
-    default_passwords = [line.strip() for line in password_file]
+            sensitive_matches = re.findall(sensitive_pattern, content)
 
-# List to store successful logins
-successful_logins = []
+            if sensitive_matches:
+                print(f'Sensitive information found in {file_path}')
+                for match in sensitive_matches:
+                    print(f'Sensitive pattern detected: {match}')
 
-# Iterate over each username and every password
-for username in default_usernames:
-    for password in default_passwords:
-        try:
-            # Construct the SSH command to attempt login
-            ssh_command = f'ssh {username}@{target_host} -p 22'  # Default SSH port is used here
+                # Implement your action here (e.g., log the findings or take other actions)
+    except Exception as e:
+        print(f"Error processing {file_path}: {str(e)}")
 
-            # Run the SSH command with the specified password
-            process = subprocess.Popen(ssh_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            process.stdin.write(f'{password}\n'.encode())
-            process.stdin.flush()
-
-            # Wait for the SSH command to complete
-            process.wait()
-
-            # Check the return code to determine if the login was successful
-            if process.returncode == 0:
-                successful_logins.append((username, password))
-                print(f'Successful login - Username: {username}, Password: {password}')
-            else:
-                print(f'Failed login - Username: {username}, Password: {password}')
-
-        except Exception as e:
-            # Handle any exceptions that may occur
-            print(f'Error: {e}')
-
-# Print the list of successful logins at the end
-if successful_logins:
-    print("\nSuccessful Logins:")
-    for username, password in successful_logins:
-        print(f'Username: {username}, Password: {password}')
-else:
-    print("\nNo successful logins.")
+if __name__ == "__main__":
+    scan_directory(root_dir)

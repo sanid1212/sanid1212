@@ -23,17 +23,22 @@ def scan_directory(root_dir):
 
 def scan_file(file_path):
     try:
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, 'rb') as file:
             content = file.read()
+        
+        try:
+            content = content.decode('utf-8')
+        except UnicodeDecodeError:
+            content = content.decode('ISO-8859-1')
+            
+        sensitive_matches = re.findall(sensitive_pattern, content)
 
-            sensitive_matches = re.findall(sensitive_pattern, content)
+        if sensitive_matches:
+            print(f'Sensitive information found in {file_path}')
+            for match in sensitive_matches:
+                print(f'Sensitive pattern detected: {match}')
 
-            if sensitive_matches:
-                print(f'Sensitive information found in {file_path}')
-                for match in sensitive_matches:
-                    print(f'Sensitive pattern detected: {match}')
-
-                # Implement your action here (e.g., log the findings or take other actions)
+            # Implement your action here (e.g., log the findings or take other actions)
     except Exception as e:
         print(f"Error processing {file_path}: {str(e)}")
 

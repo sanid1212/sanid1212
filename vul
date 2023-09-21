@@ -5,7 +5,7 @@ import re
 root_dir = "/path/to/your/directory"
 
 # Define a comprehensive pattern for sensitive information
-sensitive_pattern = r'\b(?:password[_\s]*[=:]|api[_\s]*[_\.]?key[_\s]*[=:]|secret[_\s]*[=:])(?:".*?"|".*?")\b'
+sensitive_pattern = r'\b(?:password[_\s]*[=:]|api[_\s]*[_\.]?key[_\s]*[=:]|secret[_\s]*[=:])(?:"(.*?)"|\'(.*?)\')\b'
 
 def scan_directory(root_dir):
     for dirpath, dirnames, filenames in os.walk(root_dir):
@@ -21,16 +21,17 @@ def scan_directory(root_dir):
 def scan_file(file_path):
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
-            content = file.read()
+            lines = file.readlines()
 
-            sensitive_matches = re.findall(sensitive_pattern, content)
+            for line_number, line in enumerate(lines, start=1):
+                sensitive_matches = re.findall(sensitive_pattern, line)
 
-            if sensitive_matches:
-                print(f'Sensitive information found in {file_path}')
-                for match in sensitive_matches:
-                    print(f'Sensitive pattern detected: {match}')
+                if sensitive_matches:
+                    print(f'Sensitive information found in {file_path}, line {line_number}')
+                    for match in sensitive_matches:
+                        print(f'Sensitive pattern detected: {match[0] or match[1]}')
+                    print(f'Full line: {line.strip()}')
 
-                # Implement your action here (e.g., log the findings or take other actions)
     except Exception as e:
         print(f"Error processing {file_path}: {str(e)}")
 

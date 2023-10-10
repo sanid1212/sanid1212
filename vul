@@ -1,1 +1,36 @@
-https://www.cybersecurity-help.cz/vdb/openssh/openssh/5.3p1/
+metadata:
+  language: v1-beta
+  name: "SQL Injection Check"
+  description: "Injects single and double single quotes in parameters and checks for SQL injection"
+  author: "Your Name"
+  tags: "sql-injection", "burp-proxy"
+
+given request then
+  # Get the original request
+  define:
+    original_request = {request}
+
+  # Inject single quotes into query parameters
+  for each:
+    parameter_name, parameter_value in original_request.request.url.query_parameters
+    send request (raw):
+      appending body: "{original_request.request.body}&{parameter_name}={parameter_value}'"
+  end for
+
+  if {latest.response.status_code} is 500 then
+    # If 500 status code, try injecting double single quotes
+    for each:
+      parameter_name, parameter_value in original_request.request.url.query_parameters
+      send request (raw):
+        appending body: "{original_request.request.body}&{parameter_name}={parameter_value}''"
+    end for
+  end if
+
+  if {latest.response.status_code} is 200 then
+    report issue:
+      severity: high
+      confidence: certain
+      remediation: "Review and sanitize input parameters to prevent SQL injection."
+      detail: "SQL Injection vulnerability detected in the request."
+  end if
+end if

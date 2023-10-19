@@ -1,36 +1,44 @@
-metadata:
-  language: v1-beta
-  name: "SQL Injection Check"
-  description: "Injects single and double single quotes in parameters and checks for SQL injection"
-  author: "Your Name"
-  tags: "sql-injection", "burp-proxy"
+import subprocess
+import xml.etree.ElementTree as ET
+import json
 
-given request then
-  # Get the original request
-  define:
-    original_request = {request}
+# Function to start a new SQLMap scan
+def start_sqlmap_scan(url, data, cookies):
+    # Define the SQLMap command with the --proxy option
+    command = [
+        'sqlmap',
+        '--url', url,
+        '--data', data,
+        '--cookie', cookies,
+        '--level', '3',
+        '--risk', '2',
+        '--proxy', 'http://127.0.0.1:8080'  # Update with your proxy URL
+    ]
 
-  # Inject single quotes into query parameters
-  for each:
-    parameter_name, parameter_value in original_request.request.url.query_parameters
-    send request (raw):
-      appending body: "{original_request.request.body}&{parameter_name}={parameter_value}'"
-  end for
+    # Start the SQLMap scan as a subprocess
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = process.communicate()
 
-  if {latest.response.status_code} is 500 then
-    # If 500 status code, try injecting double single quotes
-    for each:
-      parameter_name, parameter_value in original_request.request.url.query_parameters
-      send request (raw):
-        appending body: "{original_request.request.body}&{parameter_name}={parameter_value}''"
-    end for
-  end if
+    return out, err
 
-  if {latest.response.status_code} is 200 then
-    report issue:
-      severity: high
-      confidence: certain
-      remediation: "Review and sanitize input parameters to prevent SQL injection."
-      detail: "SQL Injection vulnerability detected in the request."
-  end if
-end if
+# Parse the XML file containing requests
+xml_file = "requests.xml"  # Update with your XML file path
+tree = ET.parse(xml_file)
+root = tree.getroot()
+
+# Iterate through the requests in the XML
+for request in root.findall('request'):
+    url = request.find('url').text
+    data = request.find('data').text
+    cookies = request.find('cookies').text
+
+    # Start a new SQLMap scan with the specified proxy
+    scan_output, error_output = start_sqlmap_scan(url, data, cookies)
+
+    # Print the output (you can modify this to parse and use the output as needed)
+    print("SQLMap Output:")
+    print(scan_output.decode('utf-8'))
+
+    if error_output:
+        print("SQLMap Error Output:")
+        print(error_output.decode('utf-8'))

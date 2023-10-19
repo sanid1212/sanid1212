@@ -1,25 +1,37 @@
-import subprocess
+import requests
 import xml.etree.ElementTree as ET
 import json
 
-# Function to start a new SQLMap scan
+# Define the SQLMap API URL
+sqlmap_api_url = 'http://127.0.0.1:8775'  # Update with your SQLMap API endpoint
+proxy_url = 'http://127.0.0.1:8080'  # Update with your proxy URL
+
+# Function to start a new SQLMap scan with a proxy
 def start_sqlmap_scan(url, data, cookies):
-    # Define the SQLMap command with the --proxy option
-    command = [
-        'sqlmap',
-        '--url', url,
-        '--data', data,
-        '--cookie', cookies,
-        '--level', '3',
-        '--risk', '2',
-        '--proxy', 'http://127.0.0.1:8080'  # Update with your proxy URL
-    ]
+    scan_data = {
+        "url": url,
+        "data": data,
+        "cookie": cookies,
+        "level": 3,
+        "risk": 2,
+        "proxy": proxy_url,  # Specify your proxy URL here
+    }
 
-    # Start the SQLMap scan as a subprocess
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = process.communicate()
+    # Send a POST request to start the scan
+    response = requests.post(f"{sqlmap_api_url}/scan", json=scan_data)
+    scan_id = response.json()['scan']['id']
+    return scan_id
 
-    return out, err
+# Function to check the status of a SQLMap scan
+def check_scan_status(scan_id):
+    response = requests.get(f"{sqlmap_api_url}/scan/{scan_id}/status")
+    status = response.json()['status']
+    return status
+
+# Function to retrieve scan results
+def get_scan_results(scan_id):
+    response = requests.get(f"{sqlmap_api_url}/scan/{scan_id}/data")
+    return response.json()
 
 # Parse the XML file containing requests
 xml_file = "requests.xml"  # Update with your XML file path
@@ -33,12 +45,18 @@ for request in root.findall('request'):
     cookies = request.find('cookies').text
 
     # Start a new SQLMap scan with the specified proxy
-    scan_output, error_output = start_sqlmap_scan(url, data, cookies)
+    scan_id = start_sqlmap_scan(url, data, cookies)
 
-    # Print the output (you can modify this to parse and use the output as needed)
-    print("SQLMap Output:")
-    print(scan_output.decode('utf-8'))
+    # Check the scan status and wait for it to finish
+    while True:
+        status = check_scan_status(scan_id)
+        if status == "running":
+            time.sleep(10)  # Wait for 10 seconds
+        else:
+            break
 
-    if error_output:
-        print("SQLMap Error Output:")
-        print(error_output.decode('utf-8'))
+    # Get and print scan results
+    results = get_scan_results(scan_id)
+    print(json.dumps(results, indent=2))
+
+# Note: Ensure you have a running SQLMap API server and a proxy set up before running this script.

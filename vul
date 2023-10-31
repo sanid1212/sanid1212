@@ -1,1 +1,40 @@
-sensitive_pattern = r'\b(?i)(?:password[_\s]*[=:]|api[_\s]*[_\.]?key[_\s]*[=:]|db[_\s]*[_\.]?password[_\s]*[=:]|ssn[_\s]*[=:]|credit[_\s]*card[_\s]*[=:]|Consumer[_\s]*[Kk]ey[_\s]*[=:]|Consumer[_\s]*[Ss]ecret[_\s]*[=:]|DB[_\s]*[Uu]sername[_\s]*[=:]|HEROKU[_\s]*[Aa][Pp][Ii][_\s]*[Kk][Ee][Yy][_\s]*[=:]|HOMEBREW[_\s]*[Gg][Ii][Tt][Hh][Uu][Bb][_\s]*[Aa][Pp][Ii][_\s]*[Tt][Oo][Kk][Ee][Nn][_\s]*[=:]|JEKYLL[_\s]*[Gg][Ii][Tt][Hh][Uu][Bb][_\\s]*[Tt][Oo][Kk][Ee][Nn][_\\s]*[=:]|PT[_\s]*[Tt][Oo][Kk][Ee][Nn][_\\s]*[=:]|SESSION[_\s]*[Tt][Oo][Kk][Ee][Nn][_\\s]*[=:]|SF[_\s]*[Uu][Ss][Ee][Rr][Nn][Aa][Mm][Ee][_\\\s]*[=:]|SLACK[_\\s]*[Bb][Oo][Tt][_\s]*[Tt][Oo][Kk][Ee][Nn][_\s]*[=:]|access[_\s]*[_\.]?token[_\s]*[=:]|access[_\s]*[_\.]?token[_\s]*[_\.]?secret[_\s]*[=:]|accesstoken[_\s]*[=:]|admin[_\s]*[=:]|api[_\s]*[_\.]?key[_\s]*[=:]|api[_\s]*[_\.]?secret[_\s]*[_\.]?key[_\s]*[=:]|api[_\s]*[_\.]?token[_\s]*[=:]|auth[_\s]*[_\.]?token[_\s]*[=:]|authkey[_\s]*[=:]|authorization[_\s]*[=:]|authorization[_\s]*[_\.]?key[_\s]*[=:]|authorization[_\s]*[_\.]?token[_\s]*[=:]|authtoken[_\s]*[=:]|aws[_\s]*[Aa][Cc][Cc][Ee][Ss][Ss][_\s]*[Kk][Ee][Yy][_\s]*[Ii][Dd][_\s]*[=:]|aws[_\s]*[Ss][Ee][Cc][Rr][Ee][Tt][_\s]*[Aa][Cc][Cc][Ee][Ss][Ss][_\s]*[Kk][Ee][Yy][_\s]*[=:]|bearer[_\s]*[=:]|bot[_\s]*[_\.]?access[_\s]*[_\.]?token[_\s]*[=:]|bucket[_\s]*[=:]|client[_\s]*[_\.]?[_\s]*secret[_\s]*[=:]|client[_\s]*[_\.]?[Ii][Dd][_\s]*[=:]|client[_\s]*[_\.]?[Kk][Ee][Yy][_\s]*[=:]|client[_\s]*[_\.]?[Ss][Ee][Cc][Rr][Ee][Tt][_\s]*[=:]|clientsecret[_\s]*[=:]|consumer[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|consumer[_\s]*[_\.]?[Ss]ecret[_\s]*[=:]|dbpasswd[_\s]*[=:]|email[_\s]*[=:]|encryption[_\s]*[_\.]?[Kk][Ee]y[_\s]*[=:]|encryption[_\s]*[_\.]?[Kk][Ee]y[_\s]*[=:]|encryptionkey[_\s]*[=:]|id[_\s]*[Dd][Ss][Aa][_\s]*[=:]|irc[_\s]*[_\.]?pass[_\s]*[=:]|key[_\s]*[=:]|oauth[_\s]*[_\.]?token[_\s]*[=:]|pass[_\s]*[=:]|password[_\s]*[=:]|private[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|private[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|private[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|secret[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|secret[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|secret[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|secret[_\s]*[_\.]?[Tt]oken[_\s]*[=:]|secret[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|secret[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|secret[_\s]*[_\.]?[Tt]oken[_\s]*[=:]|secret[_\s]*[=:]|secret[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|secret[_\s]*[=:]|secret[_\s]*[=:]|secret[_\s]*[=:]|session[_\s]*[_\.]?[Kk]ey[_\s]*[=:]|session[_\s]*[_\.]?[Ss]ecret[_\s]*[=:]|slack[_\s]*[_\.]?[Aa][Pp][Ii][_s]*[Ee][Cc][Rr][Ee][Tt][_s]*[Tt][Oo][Kk][Ee][Nn][_s]*[=:]|slack[_\s]*[_\.]?[Tt][Oo][Kk][Ee][Nn][_s]*[=:]|square[_\s]*[_\.]?access[_\s]*[_\.]?token[_\s]*[=:]|square[_\s]*[_\.]?oauth[_\s]*[_\.]?secret[_\s]*[=:]|STRIPE[_\s]*[_\.]?[Aa][Pp][Ii][_s]*[Ee][Cc][Rr][Ee][Tt][_s]*[Tt][Oo][Kk][Ee][Nn][_s]*[=:]|STRIPE[_\s]*[_\.]?[Dd][Ee][Vv][Ii][Cc][Ee][_s]*[Nn][Aa][Mm][Ee][_s]*[=:]|SURGE[_\s]*[_\.]?[Tt][Oo][Kk][Ee][Nn][_s]*[=:]|SURGE[_\s]*[_\.]?[Ll][Oo][Gg][Ii][Nn][_s]*[=:]|TWILIO[_\s]*[_\.]?[Aa][Cc][Cc][Oo][Uu][Nn][Tt][_s]*[Ii][Dd][_s]*[=:]|CONSUMER[_\s]*[Kk]EY[_\s]*[=:]|CONSUMER[_\s]*[Ss]ECRET[_\s]*[=:]|TRAVIS[_\s]*[Ss]UDO[_\s]*[=:]|TRAVIS[_\s]*[Oo][Ss][_s]*[Nn][Aa][Mm][Ee][_s]*[=:]|TRAVIS[_\s]*[Ss][Ee][Cc][Uu][Rr][Ee][_s]*[Ee][Nn][Vv][_s]*[Vv][Aa][Rr][Ss][_s]*[=:]|TELEGRAM[_\s]*[_\.]?[Bb][Oo][Tt][_s]*[Tt][Oo][Kk][Ee][Nn][_s]*[=:]|VAULT[_\s]*[_\.]?[Tt][Oo][Kk][Ee][Nn][_s]*[=:]|VAULT[_\s]*[_\.]?[Cc][Ll][Ii][Ee][Nn][Tt][_s]*[Kk][Ee][Yy][_s]*[=:]|TOKEN[_\s]*[=:]|VULTR[_\s]*[_\.]?[Aa][Cc][Cc][Ee][Ss][Ss][_s]*[=:]|VULTR[_\s]*[_\.]?[Ss][Ee][Cc][Rr][Ee][Tt][_s]*[=:])(?:".*?"|".*?")\b'
+import os
+import re
+
+# Define the directory to scan
+root_dir = "/path/to/your/directory"
+
+# Define a comprehensive pattern for sensitive information
+sensitive_pattern = r'\b(?i)(?:password[_\s]*[=:]|api[_\s]*[_\.]?key[_\s]*[=:]|... Your sensitive pattern ...)\b'
+
+def scan_directory(root_dir):
+    for filename in os.listdir(root_dir):
+        file_path = os.path.join(root_dir, filename)
+
+        # Check if the file is a .txt file and not a directory
+        if filename.endswith('.txt') and os.path.isfile(file_path):
+            scan_file(file_path)
+
+def scan_file(file_path):
+    try:
+        with open(file_path, 'rb') as file:
+            content = file.read()
+        
+        try:
+            content = content.decode('utf-8')
+        except UnicodeDecodeError:
+            content = content.decode('ISO-8859-1')
+            
+        sensitive_matches = re.findall(sensitive_pattern, content)
+
+        if sensitive_matches:
+            print(f'Sensitive information found in {file_path}')
+            for match in sensitive_matches:
+                print(f'Sensitive pattern detected: {match}')
+
+            # Implement your action here (e.g., log the findings or take other actions)
+    except Exception as e:
+        print(f"Error processing {file_path}: {str(e)}")
+
+if __name__ == "__main__":
+    scan_directory(root_dir)

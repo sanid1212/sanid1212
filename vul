@@ -1,14 +1,1 @@
-@echo off
-set "file_path=C:\path\to\etc\passwd"
-setlocal enabledelayedexpansion
-
-if not exist "%file_path%" (
-  echo File not found: "%file_path%"
-  exit /b
-)
-
-for /f "tokens=1 delims=:" %%a in (%file_path%) do (
-  echo %%a
-)
-
-endlocal
+type \\?\C:\path\to\passwd | findstr /R '^([^:]+):'

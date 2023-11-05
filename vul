@@ -1,5 +1,8 @@
-import paramiko, sys, os
-import threading, time
+import paramiko
+import sys
+import os
+import threading
+import time
 
 valid_combinations = []
 
@@ -24,11 +27,19 @@ if not (os.path.exists(usernames_file) and os.path.exists(input_file)):
 
 print('* * * Starting Threaded SSH Bruteforce On ' + host + ' * * *')
 
-with open(usernames_file, 'r', encoding='utf-8') as user_file:
-    usernames = user_file.read().splitlines()
+def read_file(filename):
+    data = []
+    with open(filename, 'rb') as file:
+        for line in file:
+            try:
+                line = line.decode('utf-8').strip()
+                data.append(line)
+            except UnicodeDecodeError:
+                pass  # Skip lines that can't be decoded with UTF-8
+    return data
 
-with open(input_file, 'r', encoding='utf-8') as pass_file:
-    passwords = pass_file.read().splitlines()
+usernames = read_file(usernames_file)
+passwords = read_file(input_file)
 
 threads = []
 

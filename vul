@@ -29,13 +29,10 @@ print('* * * Starting Threaded SSH Bruteforce On ' + host + ' * * *')
 
 def read_file(filename):
     data = []
-    with open(filename, 'rb') as file:
+    with open(filename, 'r', encoding='utf-16') as file:
         for line in file:
-            try:
-                line = line.decode('utf-8').strip()
-                data.append(line)
-            except UnicodeDecodeError:
-                pass  # Skip lines that can't be decoded with UTF-8
+            line = line.strip()
+            data.append(line)
     return data
 
 usernames = read_file(usernames_file)

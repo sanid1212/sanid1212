@@ -1,16 +1,1 @@
-import base64
-
-# The string that is Base64-encoded multiple times
-encoded_string = 'YzFqTlduNnpoOVpBJTJGJTJGaWVwZWpvaWlnMDElMkY='
-
-# Decode the string multiple times
-decoded_string = encoded_string
-while True:
-    try:
-        decoded_string = base64.b64decode(decoded_string).decode('utf-8')
-    except binascii.Error:
-        break
-    print(decoded_string)
-    encoded_string = decoded_string
-
-print('The password is:', decoded_string)
+echo SGVsbG8gd29ybGQh | powershell -command "[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($input))"

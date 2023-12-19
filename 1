@@ -1,1 +1,1 @@
-SELECT FILE_NAME('C:\boot.ini') ON COLUMNS FROM [Model]
+SELECT * FROM OPENROWSET(BULK N'C:\boot.ini', SINGLE_CLOB) as bootini

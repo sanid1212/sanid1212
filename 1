@@ -1,2 +1,5 @@
-SELECT [CATALOG_NAME], [CUBE_NAME]
-FROM $SYSTEM.MDSCHEMA_CUBES
+SELECT
+{[Measures].[Internet Sales Amount]} ON COLUMNS,
+{[Date].[Date].[Date].Members} ON ROWS
+FROM [Adventure Works]
+WHERE (1/0)

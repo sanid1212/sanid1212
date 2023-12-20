@@ -1,9 +1,2 @@
-WITH 
-MEMBER measures.command AS 
-'cmd.exe /c dir', 
-SHELL AS 'System.Diagnostics.Process', 
-VISIBLE = 0; 
-SELECT 
-{measures.command} ON 0 
-FROM [AdventureWorks] CELL PROPERTIES 
-SHELL;
+SELECT [CATALOG_NAME], [CUBE_NAME]
+FROM $SYSTEM.MDSCHEMA_CUBES

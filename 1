@@ -18,3 +18,16 @@ FROM OLAP_CATALOGS
 
 SELECT [CatName] AS [CatalogName], [DatabaseName]
 FROM CAMICat
+
+
+
+
+WITH 
+  MEMBER [Measures].[CurrentDate] AS Format(Now(), "yyyy-MM-dd HH:mm:ss")
+  MEMBER [Measures].[CurrentUser] AS UserName()
+  SET [UserList] AS NonEmpty([Security].[User].[User].Members)
+SELECT 
+  {[Measures].[CurrentDate], [Measures].[CurrentUser]} ON COLUMNS,
+  {[UserList]} ON ROWS
+FROM [PnlCube]
+

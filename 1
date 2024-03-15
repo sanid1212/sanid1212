@@ -60,3 +60,11 @@ FROM [YourCubeName]
 
 SELECT [CATALOG_NAME], [CUBE_NAME], [DIMENSION_NAME]
 FROM $system.MDSchema_Dimensions
+
+
+
+
+
+SELECT [DIMENSION_UNIQUE_NAME] ON COLUMNS
+FROM $system.MDSchema_Dimensions
+WHERE [CUBE_NAME] = 'YourCubeName'

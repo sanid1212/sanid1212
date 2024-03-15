@@ -1,15 +1,1 @@
-With Member Measures.CurrentDate As 
-Format(
-    Now(),
-    'yyyyMMdd'
-)
-
-Member Measures.GetMemberCurrentDate as
-'[Start Date].[Miladi Int Date].&['+ measures.CurrentDate + ']'
-
-member Measures.GetCurrentDateBimehValue as
-(StrToMember(Measures.GetMemberCurrentDate) ,[Measures].[BimehValue])
-
-
-select Measures.GetCurrentDateBimehValue on columns
-from [BimehCube]
+SELECT * FROM $SYSTEM.MDSCHEMA_CUBES

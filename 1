@@ -38,3 +38,12 @@ SELECT
   [Measures].[Sales] ON COLUMNS,
   [Date].[Date].&[2024-03-15] ON ROWS
 FROM [YourCubeName]
+
+
+
+
+
+SELECT 
+  [Measures].Members ON COLUMNS,
+  [Date].[Date].&[2024-03-15] ON ROWS
+FROM [YourCubeName]

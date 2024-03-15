@@ -5,3 +5,16 @@ FROM $system.MDSchema_Cubes
 
 SELECT [DatabaseName], [Name]
 FROM $system.DBSCHEMA_CATALOGS
+
+
+SELECT [CatalogName], [Name] AS [DatabaseName]
+FROM $system.DBSCHEMA_CATALOGS
+
+
+SELECT [CatalogName], [DatabaseName]
+FROM OLAP_CATALOGS
+
+
+
+SELECT [CatName] AS [CatalogName], [DatabaseName]
+FROM CAMICat

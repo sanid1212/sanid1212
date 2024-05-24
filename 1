@@ -1,1 +1,1 @@
-Get-ChildItem -Path "\\SharedDrive\Path" -Recurse -Filter *.config | ForEach-Object { Select-String -Path $_.FullName -Pattern "username=" | ForEach-Object { [PSCustomObject]@{ Filename = $_.FileName; Line = $_.Line } } }
+Get-ChildItem -Path "\\SharedDrive\Path" -Recurse -Filter *.config | ForEach-Object { Select-String -Path $_.FullName -Pattern "username=" | ForEach-Object { [PSCustomObject]@{ FilePath = $_.Path; Line = $_.Line } } }

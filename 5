@@ -5,7 +5,7 @@ $regexOptions = [System.Text.RegularExpressions.RegexOptions]::Multiline  # Enab
 # Define a function to check if a string meets the password criteria
 function IsPotentialPassword {
     param([string]$text)
-    # Regex pattern to match a combination of lowercase letters, uppercase letters, digits, and symbols
+    # Regex pattern to match a combination of lowercase letters, uppercase letters, digits, and special symbols, at least 8 characters long
     $passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s]).{8,}$'
     return $text -match $passwordPattern
 }
@@ -20,8 +20,11 @@ Get-ChildItem -Path $directory -Recurse -Include *.txt,*.c,*.cpp,*.h,*.cs,*.java
         $potentialPassword = $_.Value -replace '\"', ''
         if (IsPotentialPassword $potentialPassword) {
             Write-Output "Potential password found in file: $($_.FileName)"
-            Write-Output "Line: $($_.LineNumber)"
-            Write-Output "Content: $potentialPassword"
+            # Output the context around the matched string
+            $contextStart = [math]::Max(0, $_.Index - 20)
+            $contextEnd = [math]::Min($fileContent.Length, $_.Index + $_.Length + 20)
+            $context = $fileContent.Substring($contextStart, $contextEnd - $contextStart)
+            Write-Output "Context: $context"
         }
     }
 }

@@ -1,1 +1,27 @@
-$directory = "C:\path\to\your\config\files"; $pattern = '(?<=[=:()\[\]\{\}\"\''])[a-zA-Z0-9!@#\$%\^\&\*\(\)_\+\-=\[\]\{\};:"''\|\\,.<>\/?`~]{8,}(?=[\"\')])'; Get-ChildItem -Path $directory -Recurse -Include *.txt | ForEach-Object { Select-String -Path $_.FullName -Pattern $pattern | ForEach-Object { Write-Output "Potential sensitive information found in file: $($_.Path)"; Write-Output "Line $($_.LineNumber): $($_.Line.Trim())" } }; pause
+$directory = "C:\Users\venkateswarlu.k\Pictures\test"
+$pattern = '\".*?(?<!\\)\"'  # Regex pattern to match strings within double quotes, excluding escaped quotes
+$regexOptions = [System.Text.RegularExpressions.RegexOptions]::Multiline  # Enable matching across multiple lines
+
+# Define a function to check if a string meets the password criteria
+function IsPotentialPassword {
+    param([string]$text)
+    # Regex pattern to match a combination of lowercase letters, uppercase letters, digits, and symbols
+    $passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s]).{8,}$'
+    return $text -match $passwordPattern
+}
+
+# Search recursively in the directory for source code files
+Get-ChildItem -Path $directory -Recurse -Include *.txt,*.c,*.cpp,*.h,*.cs,*.java,*.py,*.html,*.css,*.js,*.php,*.rb,*.pl,*.sh | ForEach-Object {
+    # Read the file content
+    $fileContent = Get-Content $_.FullName -Raw
+    # Use regex to find strings within double quotes
+    [System.Text.RegularExpressions.Regex]::Matches($fileContent, $pattern, $regexOptions) | ForEach-Object {
+        # Extract the string and check if it meets the password criteria
+        $potentialPassword = $_.Value -replace '\"', ''
+        if (IsPotentialPassword $potentialPassword) {
+            Write-Output "Potential password found in file: $($_.FileName)"
+            Write-Output "Line: $($_.LineNumber)"
+            Write-Output "Content: $potentialPassword"
+        }
+    }
+}

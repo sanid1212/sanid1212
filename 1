@@ -1,7 +1,11 @@
-local path = os.getenv("PATH")
-if path then
-    print("PATH environment variable:")
-    print(path)
-else
-    print("PATH environment variable not found")
-end
+local lfs = require("lfs")
+
+-- Print current directory
+print("Current directory: " .. lfs.currentdir())
+
+-- Create a new directory
+lfs.mkdir("new_directory")
+
+-- Change to the new directory
+lfs.chdir("new_directory")
+print("Changed to directory: " .. lfs.currentdir())

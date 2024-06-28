@@ -1,11 +1,45 @@
-function get_system_info()
-    local cmd = 'systeminfo'
-    local handle = io.popen(cmd)
-    local result = handle:read('*a')
-    handle:close()
-    return result
+-- Lua script to get basic system information on Windows
+
+-- Function to get operating system version
+function get_os_version()
+    return jit.os .. " " .. jit.arch -- Returns something like "Windows x64"
+end
+
+-- Function to get CPU information
+function get_cpu_info()
+    local cpu_info = ""
+    local file = io.open('/proc/cpuinfo', 'r')  -- You can use other system files or APIs here
+    if file then
+        cpu_info = file:read('*all')
+        file:close()
+    end
+    return cpu_info
+end
+
+-- Function to get total memory
+function get_total_memory()
+    local total_memory = 0
+    local file = io.open('/proc/meminfo', 'r') -- You can use other system files or APIs here
+    if file then
+        for line in file:lines() do
+            local mem = line:match('^MemTotal:%s+(%d+)%s+kB$')
+            if mem then
+                total_memory = tonumber(mem) / 1024  -- Convert to MB
+                break
+            end
+        end
+        file:close()
+    end
+    return total_memory
 end
 
 -- Example usage:
-local system_info = get_system_info()
-print(system_info)
+local os_version = get_os_version()
+print("Operating System:", os_version)
+
+local cpu_info = get_cpu_info()
+print("CPU Info:")
+print(cpu_info)
+
+local total_memory = get_total_memory()
+print(string.format("Total Memory: %.2f MB", total_memory))

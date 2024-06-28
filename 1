@@ -1,7 +1,25 @@
--- Get username on Windows
-local username = os.getenv("USERNAME")
-if username then
-    print("Username:", username)
-else
-    print("Username not found")
+-- Define the protocol
+do
+    local nbns_proto = Proto("windows_hostname", "Windows Hostname Extractor")
+
+    -- Define fields to extract
+    local f_nbns_name = Field.new("nbns.name")
+
+    -- Function to dissect NBNS packets and extract hostname
+    function nbns_proto.dissector(tvb, pinfo, tree)
+        local nbns_name = f_nbns_name()
+
+        if nbns_name then
+            local hostname = nbns_name.value:sub(1, -3) -- Remove the suffix (typically '\0x00')
+            local subtree = tree:add(nbns_proto, tvb())
+            subtree:add(nbns_proto.fields.hostname, nbns_name)
+        end
+    end
+
+    -- Define the fields to display
+    nbns_proto.fields.hostname = ProtoField.string("hostname.host", "Hostname")
+
+    -- Register the protocol
+    local nbns_dissector_table = DissectorTable.get("udp.port")
+    nbns_dissector_table:add(137, nbns_proto)
 end

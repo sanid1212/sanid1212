@@ -1,1 +1,7 @@
-Get-ChildItem -Path "\\SharedDrive\Path" -Recurse -Filter *.config | ForEach-Object { $file = $_.FullName; Select-String -Path $file -Pattern "username=" | ForEach-Object { [PSCustomObject]@{ FullPath = $file; Line = $_.Line } } }
+local path = os.getenv("PATH")
+if path then
+    print("PATH environment variable:")
+    print(path)
+else
+    print("PATH environment variable not found")
+end

@@ -1,12 +1,13 @@
-local socket = require("socket")
-
--- Function to get IP information
-function get_ip_info()
-    local hostname = socket.dns.gethostname()
-    local ip = socket.dns.toip(hostname)
+-- Function to get local IP address
+function get_local_ip()
+    local socket = require("socket")
+    local udp = socket.udp()
+    udp:setpeername("8.8.8.8", 80)  -- Connect to Google's DNS server
+    local ip, _ = udp:getsockname()
+    udp:close()
     return ip or "IP address not found"
 end
 
 -- Example usage:
-local ip_info = get_ip_info()
-print("IP Address:", ip_info)
+local ip_address = get_local_ip()
+print("Local IP Address:", ip_address)

@@ -2,13 +2,13 @@
 
 -- Function to get operating system version
 function get_os_version()
-    return jit.os .. " " .. jit.arch -- Returns something like "Windows x64"
+    return os.getenv("OS") or ""
 end
 
 -- Function to get CPU information
 function get_cpu_info()
     local cpu_info = ""
-    local file = io.open('/proc/cpuinfo', 'r')  -- You can use other system files or APIs here
+    local file = io.open('C:\\proc\\cpuinfo', 'r')  -- Replace with appropriate Windows file path or API
     if file then
         cpu_info = file:read('*all')
         file:close()
@@ -19,7 +19,7 @@ end
 -- Function to get total memory
 function get_total_memory()
     local total_memory = 0
-    local file = io.open('/proc/meminfo', 'r') -- You can use other system files or APIs here
+    local file = io.open('C:\\proc\\meminfo', 'r') -- Replace with appropriate Windows file path or API
     if file then
         for line in file:lines() do
             local mem = line:match('^MemTotal:%s+(%d+)%s+kB$')

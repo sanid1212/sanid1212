@@ -1,45 +1,12 @@
--- Lua script to get basic system information on Windows
+local socket = require("socket")
 
--- Function to get operating system version
-function get_os_version()
-    return os.getenv("OS") or ""
-end
-
--- Function to get CPU information
-function get_cpu_info()
-    local cpu_info = ""
-    local file = io.open('C:\\proc\\cpuinfo', 'r')  -- Replace with appropriate Windows file path or API
-    if file then
-        cpu_info = file:read('*all')
-        file:close()
-    end
-    return cpu_info
-end
-
--- Function to get total memory
-function get_total_memory()
-    local total_memory = 0
-    local file = io.open('C:\\proc\\meminfo', 'r') -- Replace with appropriate Windows file path or API
-    if file then
-        for line in file:lines() do
-            local mem = line:match('^MemTotal:%s+(%d+)%s+kB$')
-            if mem then
-                total_memory = tonumber(mem) / 1024  -- Convert to MB
-                break
-            end
-        end
-        file:close()
-    end
-    return total_memory
+-- Function to get IP information
+function get_ip_info()
+    local hostname = socket.dns.gethostname()
+    local ip = socket.dns.toip(hostname)
+    return ip or "IP address not found"
 end
 
 -- Example usage:
-local os_version = get_os_version()
-print("Operating System:", os_version)
-
-local cpu_info = get_cpu_info()
-print("CPU Info:")
-print(cpu_info)
-
-local total_memory = get_total_memory()
-print(string.format("Total Memory: %.2f MB", total_memory))
+local ip_info = get_ip_info()
+print("IP Address:", ip_info)

